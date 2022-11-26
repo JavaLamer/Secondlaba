@@ -20,7 +20,7 @@ import static java.lang.Math.*;
 // Главный класс приложения, он же класс фрейма
 public class MainFrame extends JFrame {
     // Размеры окна приложения в виде констант
-    private static final int WIDTH = 400;
+    private static final int WIDTH = 600;
     private static final int HEIGHT = 320;
     // Текстовые поля для считывания значений переменных,
 // как компоненты, совместно используемые в различных методах
@@ -38,11 +38,11 @@ public class MainFrame extends JFrame {
     private int formulaId = 1;
     // Формула №1 для рассчѐта
     public Double calculate1(Double x, Double y, Double z) {
-        return  ;
+        return (pow(Math.log(pow(1+z,2))+Math.cos(Math.PI*pow(y,3)),1.0/4))/(pow(Math.cos(exp(x))+pow(1.0/x,1.0/2)+exp(pow(x,2)),Math.sin(x))) ;
     }
     // Формула №2 для рассчѐта
     public Double calculate2(Double x, Double y, Double z) {
-        return x*x*x + 1/y;
+        return pow(Math.sin(pow(z,y)),2)/pow(1+pow(x,3),1.0/2);
     }
     // Вспомогательный метод для добавления кнопок на панель
     private void addRadioButton(String buttonName, final int formulaId) {
@@ -88,7 +88,7 @@ public class MainFrame extends JFrame {
         hboxVariables.add(labelForX);
         hboxVariables.add(Box.createHorizontalStrut(10));
         hboxVariables.add(textFieldX);
-        hboxVariables.add(Box.createHorizontalStrut(100));
+        hboxVariables.add(Box.createHorizontalStrut(5));
         hboxVariables.add(labelForY);
         hboxVariables.add(Box.createHorizontalStrut(10));
         hboxVariables.add(textFieldY);
