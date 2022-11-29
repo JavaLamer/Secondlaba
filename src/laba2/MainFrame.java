@@ -28,6 +28,7 @@ public class MainFrame extends JFrame {
     private static final int HEIGHT = 320;
     // Текстовые поля для считывания значений переменных,
 // как компоненты, совместно используемые в различных методах
+    Dimension newDim = new Dimension(WIDTH, HEIGHT);
     private JTextField textFieldX;
     private JTextField textFieldY;
 
@@ -36,6 +37,8 @@ public class MainFrame extends JFrame {
     // Текстовое поле для отображения результата,
 // как компонент, совместно используемый в различных методах
     private JTextField textFieldResult;
+
+    private JTextField textFieldSum;
     // Группа радио-кнопок для обеспечения уникальности выделения в группе
     private ButtonGroup radioButtons = new ButtonGroup();
     // Контейнер для отображения радио-кнопок
@@ -76,41 +79,48 @@ public class MainFrame extends JFrame {
         hboxFormulaType.add(Box.createHorizontalGlue());
         hboxFormulaType.setBorder(
                 BorderFactory.createLineBorder(Color.YELLOW));
-// Создать область с полями ввода для X и Y
+
+
+        // Создать область с полями ввода для X и Y
         JLabel labelForX = new JLabel("X:");
         textFieldX = new JTextField("0", 10);
         textFieldX.setMaximumSize(textFieldX.getPreferredSize());
+
         JLabel labelForY = new JLabel("Y:");
         textFieldY = new JTextField("0", 10);
         textFieldY.setMaximumSize(textFieldY.getPreferredSize());
+
         JLabel labelForZ = new JLabel("Z:");
         textFieldZ = new JTextField("0", 10);
         textFieldZ.setMaximumSize(textFieldZ.getPreferredSize());
-        Box hboxVariables = Box.createHorizontalBox();
 
-        hboxVariables.add(Box.createHorizontalGlue());
+        Box hboxVariables = Box.createHorizontalBox();
+        hboxVariables.setBorder(
+                BorderFactory.createLineBorder(Color.RED));
+
+
         hboxVariables.add(labelForX);
         hboxVariables.add(Box.createHorizontalStrut(5));
         hboxVariables.add(textFieldX);
-        hboxVariables.add(Box.createHorizontalStrut(5));
+        hboxVariables.add(Box.createGlue(),textFieldX);
+
+
         hboxVariables.add(labelForY);
         hboxVariables.add(Box.createHorizontalStrut(5));
         hboxVariables.add(textFieldY);
+        hboxVariables.add(Box.createGlue(),textFieldY);
+
         hboxVariables.add(labelForZ);
         hboxVariables.add(Box.createHorizontalStrut(5));
         hboxVariables.add(textFieldZ);
-        hboxVariables.add(Box.createHorizontalGlue());
+
+
+
+
+
 // Создать область для вывода результата
         JLabel labelForResult = new JLabel("Результат:");
-
-
-        Box hboxButtons = Box.createHorizontalBox();
-        hboxButtons.add(Box.createHorizontalGlue());
-
-
-
-//labelResult = new JLabel("0");
-        textFieldResult = new JTextField("0", 10);
+        textFieldResult = new JTextField("0", 20);
         textFieldResult.setMaximumSize(
                 textFieldResult.getPreferredSize());
         Box hboxResult = Box.createHorizontalBox();
@@ -119,10 +129,26 @@ public class MainFrame extends JFrame {
         hboxResult.add(Box.createHorizontalStrut(10));
         hboxResult.add(textFieldResult);
         hboxResult.add(Box.createHorizontalGlue());
-//
-        final Double[] sum ={0.0};
+
+
+ //
+        JLabel labelForSum = new JLabel("M+:");
+        textFieldSum = new JTextField("0", 20);
+
+
+        textFieldSum.setMaximumSize(
+                textFieldSum.getPreferredSize());
+        Box hboxResult1 = Box.createHorizontalBox();
+        hboxResult1.add(Box.createHorizontalGlue());
+        hboxResult1.add(labelForSum);
+        hboxResult1.add(Box.createHorizontalStrut(10));
+        hboxResult1.add(textFieldSum);
+        hboxResult1.add(Box.createHorizontalGlue());
+
+        hboxResult1.setBorder(BorderFactory.createLineBorder(Color.BLUE));
 // Создать область для кнопок
 
+        final Double[] sum ={0.0};
         JButton M = new JButton("M+");
         M.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
@@ -135,7 +161,7 @@ public class MainFrame extends JFrame {
                 else
                     result = calculate2(x, y, z);
                 sum[0] += result;
-                textFieldResult.setText(sum[0].toString());
+                textFieldSum.setText(sum[0].toString());
             }
 
         });
@@ -143,8 +169,8 @@ public class MainFrame extends JFrame {
 
         MC.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
-                sum[0] =0.0;
-
+                sum[0] = 0.0;
+                textFieldSum.setText("0.0");
             }
 
         });
@@ -177,9 +203,11 @@ public class MainFrame extends JFrame {
                 textFieldY.setText("0");
                 textFieldZ.setText("0");
                 textFieldResult.setText("0");
+
             }
         });
 
+        Box hboxButtons = Box.createHorizontalBox();
         hboxButtons.add(Box.createHorizontalGlue());
         hboxButtons.add(buttonCalc);
         hboxButtons.add(Box.createHorizontalStrut(30));
@@ -189,6 +217,8 @@ public class MainFrame extends JFrame {
         hboxButtons.add(Box.createHorizontalStrut(30));
         hboxButtons.add(buttonReset);
         hboxButtons.add(Box.createHorizontalGlue());
+        hboxButtons.setBorder(
+                BorderFactory.createLineBorder(Color.GREEN));
 
 // Связать области воедино в компоновке BoxLayout
         Box contentBox = Box.createVerticalBox();
@@ -197,6 +227,8 @@ public class MainFrame extends JFrame {
         contentBox.add(hboxVariables);
         contentBox.add(hboxResult);
         contentBox.add(hboxButtons);
+        contentBox.add(hboxResult1);
+
         contentBox.add(Box.createVerticalGlue());
         getContentPane().add(contentBox, BorderLayout.CENTER);
     }
