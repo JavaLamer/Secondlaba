@@ -1,4 +1,5 @@
-// Импортируются классы, используемые в приложении
+package laba2;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +20,22 @@ import static java.lang.Math.*;
 @SuppressWarnings("serial")
 // Главный класс приложения, он же класс фрейма
 public class MainFrame extends JFrame {
+//        private Ilness beta ;
+//        public MainFrame(Ilness beta) {
+//            this.beta = beta;
+//        }
+
+
+    Ilness localInstance;
+
+    public MainFrame(Ilness _beta)
+    {
+
+        localInstance = _beta;
+        Ilness locale = localInstance;
+    }
+
+
     // Размеры окна приложения в виде констант
     private static final int WIDTH = 600;
     private static final int HEIGHT = 320;
@@ -28,6 +45,7 @@ public class MainFrame extends JFrame {
     private JTextField textFieldY;
 
     private JTextField textFieldZ;
+
     // Текстовое поле для отображения результата,
 // как компонент, совместно используемый в различных методах
     private JTextField textFieldResult;
@@ -45,7 +63,7 @@ public class MainFrame extends JFrame {
         return pow(Math.sin(pow(z,y)),2)/pow(1+pow(x,3),1.0/2);
     }
     // Вспомогательный метод для добавления кнопок на панель
-    private void addRadioButton(String buttonName, final int formulaId) {
+    private void addRadioButton  (String buttonName, final int formulaId) {
         JRadioButton button = new JRadioButton(buttonName);
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
@@ -82,22 +100,28 @@ public class MainFrame extends JFrame {
         textFieldZ = new JTextField("0", 10);
         textFieldZ.setMaximumSize(textFieldZ.getPreferredSize());
         Box hboxVariables = Box.createHorizontalBox();
-        hboxVariables.setBorder(
-                BorderFactory.createLineBorder(Color.RED));
+
         hboxVariables.add(Box.createHorizontalGlue());
         hboxVariables.add(labelForX);
-        hboxVariables.add(Box.createHorizontalStrut(10));
+        hboxVariables.add(Box.createHorizontalStrut(5));
         hboxVariables.add(textFieldX);
         hboxVariables.add(Box.createHorizontalStrut(5));
         hboxVariables.add(labelForY);
-        hboxVariables.add(Box.createHorizontalStrut(10));
+        hboxVariables.add(Box.createHorizontalStrut(5));
         hboxVariables.add(textFieldY);
         hboxVariables.add(labelForZ);
-        hboxVariables.add(Box.createHorizontalStrut(10));
+        hboxVariables.add(Box.createHorizontalStrut(5));
         hboxVariables.add(textFieldZ);
         hboxVariables.add(Box.createHorizontalGlue());
 // Создать область для вывода результата
         JLabel labelForResult = new JLabel("Результат:");
+
+
+        Box hboxButtons = Box.createHorizontalBox();
+        hboxButtons.add(Box.createHorizontalGlue());
+
+
+
 //labelResult = new JLabel("0");
         textFieldResult = new JTextField("0", 10);
         textFieldResult.setMaximumSize(
@@ -108,8 +132,36 @@ public class MainFrame extends JFrame {
         hboxResult.add(Box.createHorizontalStrut(10));
         hboxResult.add(textFieldResult);
         hboxResult.add(Box.createHorizontalGlue());
-        hboxResult.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+//
+        final Double[] sum ={0.0};
 // Создать область для кнопок
+
+        JButton M = new JButton("M+");
+        M.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                Double x = Double.parseDouble(textFieldX.getText());
+                Double y = Double.parseDouble(textFieldY.getText());
+                Double z = Double.parseDouble(textFieldZ.getText());
+                Double result;
+                if (formulaId == 1)
+                    result = calculate1(x, y, z);
+                else
+                    result = calculate2(x, y, z);
+                sum[0] += result;
+                textFieldResult.setText(sum[0].toString());
+            }
+
+        });
+        JButton MC = new JButton("MC");
+
+        MC.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                sum[0] =0.0;
+
+            }
+
+        });
+
         JButton buttonCalc = new JButton("Вычислить");
         buttonCalc.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
@@ -140,14 +192,17 @@ public class MainFrame extends JFrame {
                 textFieldResult.setText("0");
             }
         });
-        Box hboxButtons = Box.createHorizontalBox();
+
         hboxButtons.add(Box.createHorizontalGlue());
         hboxButtons.add(buttonCalc);
         hboxButtons.add(Box.createHorizontalStrut(30));
+        hboxButtons.add(M);
+        hboxButtons.add(Box.createHorizontalStrut(30));
+        hboxButtons.add(MC);
+        hboxButtons.add(Box.createHorizontalStrut(30));
         hboxButtons.add(buttonReset);
         hboxButtons.add(Box.createHorizontalGlue());
-        hboxButtons.setBorder(
-                BorderFactory.createLineBorder(Color.GREEN));
+
 // Связать области воедино в компоновке BoxLayout
         Box contentBox = Box.createVerticalBox();
         contentBox.add(Box.createVerticalGlue());
@@ -157,6 +212,36 @@ public class MainFrame extends JFrame {
         contentBox.add(hboxButtons);
         contentBox.add(Box.createVerticalGlue());
         getContentPane().add(contentBox, BorderLayout.CENTER);
+    }
+
+    private Double actionPerformedSum(int formulaId) {
+        Double x = Double.parseDouble(textFieldX.getText());
+        Double y = Double.parseDouble(textFieldY.getText());
+        Double z = Double.parseDouble(textFieldZ.getText());
+        Double sum = 0.0;
+        if (formulaId==1)
+            sum +=calculate1(x,y,z) ;
+        else
+            sum +=calculate2(x,y,z);
+        return sum;
+    }
+
+    public class Ilness{
+        Double FieldText = 0.0;
+
+        public double getResult(){
+            FieldText += actionPerformedSum(formulaId);
+            return FieldText;
+        }
+
+        public double getFieldText(){
+            return FieldText;
+        }
+
+        public double CanValue(){
+            FieldText = 0.0;
+            return FieldText;
+        }
     }
     // Главный метод класса
     public static void main(String[] args) {
