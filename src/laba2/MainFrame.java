@@ -20,20 +20,7 @@ import static java.lang.Math.*;
 @SuppressWarnings("serial")
 // Главный класс приложения, он же класс фрейма
 public class MainFrame extends JFrame {
-//        private Ilness beta ;
-//        public MainFrame(Ilness beta) {
-//            this.beta = beta;
-//        }
 
-
-    Ilness localInstance;
-
-    public MainFrame(Ilness _beta)
-    {
-
-        localInstance = _beta;
-        Ilness locale = localInstance;
-    }
 
 
     // Размеры окна приложения в виде констант
@@ -226,23 +213,7 @@ public class MainFrame extends JFrame {
         return sum;
     }
 
-    public class Ilness{
-        Double FieldText = 0.0;
 
-        public double getResult(){
-            FieldText += actionPerformedSum(formulaId);
-            return FieldText;
-        }
-
-        public double getFieldText(){
-            return FieldText;
-        }
-
-        public double CanValue(){
-            FieldText = 0.0;
-            return FieldText;
-        }
-    }
     // Главный метод класса
     public static void main(String[] args) {
         MainFrame frame = new MainFrame();
